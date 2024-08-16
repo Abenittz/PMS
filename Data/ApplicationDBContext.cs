@@ -15,7 +15,7 @@ namespace yapms.Data
         }
 
         public DbSet<Skills> Skills { get; set; }
-        public DbSet<Users> MyProperty { get; set; }
+        public DbSet<Users> Users { get; set; }
 
         
     }
