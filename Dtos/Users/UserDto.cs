@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace yapms.Models
+namespace yapms.Dtos.Users
 {
-    [Table("Users")]
-    public class Users
+    public class UserDto
     {
         public int ID { get; set; } 
         public required string Username { get; set; }
@@ -18,9 +16,5 @@ namespace yapms.Models
         public string Lastname { get; set; } = string.Empty;
         public string ProfilePicture { get; set; } = string.Empty;
         public string SkillSet { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
-
-        public List<UserSkills> UserSkills { get; set; } = new List<UserSkills>();
     }
 }

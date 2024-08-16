@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using yapms.Data;
+using yapms.Dtos.Users;
+using yapms.Mappers;
 
 namespace yapms.Controllers
 {
@@ -33,6 +35,14 @@ namespace yapms.Controllers
             }
 
             return Ok(users);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateUsersRequestdto userDto){
+            var user = userDto.ToUserFromCreateDto();
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = user.ID}, user.ToUserDto());
         }
     }
 }
