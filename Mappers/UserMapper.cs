@@ -9,8 +9,10 @@ namespace yapms.Mappers
 {
     public static class UserMapper
     {
-        public static UserDto ToUserDto(this Users usreDto){
-            return new UserDto {
+        public static UserDto ToUserDto(this Users usreDto)
+        {
+            return new UserDto
+            {
                 ID = usreDto.ID,
                 Firstname = usreDto.Firstname,
                 Lastname = usreDto.Lastname,
