@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using yapms.Data;
+using yapms.Interfaces;
+using yapms.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString));
 });
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

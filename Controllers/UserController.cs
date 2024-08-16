@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using yapms.Data;
 using yapms.Dtos.Users;
+using yapms.Interfaces;
 using yapms.Mappers;
 
 namespace yapms.Controllers
@@ -15,21 +16,24 @@ namespace yapms.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
-        public UserController(ApplicationDBContext context)
+        private readonly IUserRepository _userRepo;
+        public UserController(ApplicationDBContext context, IUserRepository userRepo)
         {
             _context = context;
+            _userRepo = userRepo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll(){
-            var user = await _context.Users.ToListAsync();
+            var user = await _userRepo.GetAllAsync();
+            var userDto = user.Select(s => s.ToUserDto());
             
             return Ok(user);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id){
-            var users = await _context.Users.FindAsync(id);
+            var users = await _userRepo.GetByIdAsync(id);
 
             if (users==null){
                 return NotFound();
@@ -41,44 +45,31 @@ namespace yapms.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUsersRequestdto userDto){
             var user = userDto.ToUserFromCreateDto();
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            await _userRepo.CreateAsync(user);
             return CreatedAtAction(nameof(GetById), new {id = user.ID}, user.ToUserDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id,[FromBody] UpdateUsersRequestdto updateDto){
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.ID == id);
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUsersRequestdto updateDto){
+            var user = await _userRepo.UpdateAsync(id, updateDto);
 
             if (user==null){
                 return NotFound();
             }
 
-            user.Username = updateDto.Username;
-            user.Email = updateDto.Email;
-            user.Firstname = updateDto.Firstname;
-            user.Lastname = updateDto.Lastname;
-            user.Password = updateDto.Password; 
-            user.PhoneNo = updateDto.PhoneNo;
-            user.ProfilePicture = updateDto.ProfilePicture;
-            user.SkillSet = updateDto.SkillSet;
-
-            await _context.SaveChangesAsync();
-            return Ok(user);
+            return Ok(user.ToUserDto());
 
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id){
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.ID==id);
+            var user = await _userRepo.DeleteAsync(id);
+            
             if (user==null){
                 return NotFound();
             }
-
-             _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
 
             return NoContent();
 
