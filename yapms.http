@@ -1,0 +1,6 @@
+@yapms_HostAddress = http://localhost:5177
+
+GET {{yapms_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
