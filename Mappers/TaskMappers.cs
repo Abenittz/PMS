@@ -10,13 +10,28 @@ namespace yapms.Mappers
 {
     public static class TaskMappers
     {
-        public static TasksDto TasksDto(this Tasks tasksModel){
-            return new TasksDto {
+        public static TasksDto ToTasksDto(this Tasks tasksModel)
+        {
+            return new TasksDto
+            {
+                ID = tasksModel.ID,
                 Title = tasksModel.Title,
                 Description = tasksModel.Description,
                 CreatedDate = tasksModel.CreatedDate,
                 DueDate = tasksModel.DueDate,
             };
         }
+
+        public static Tasks ToTaskFromTaskDto(this CreateTasksDto tasks)
+        {
+            return new Tasks
+            {
+                Title = tasks.Title,
+                Description = tasks.Description,
+                CreatedDate = tasks.CreatedDate,
+                DueDate = tasks.DueDate,
+            };
+        }
+
     }
 }
