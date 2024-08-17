@@ -12,7 +12,7 @@ namespace yapms.Interfaces
         Task<List<Users>> GetAllAsync();
         Task<Users?> GetByIdAsync(int id);
         Task<Users> CreateAsync(Users user);
-        Task<Users?> UpdateAsync(int id, UpdateUsersRequestdto user);
+        Task<Users?> UpdateAsync(int id, UpdateUsersRequestdto userDto);
         Task<Users?> DeleteAsync(int id);
     }
 }
