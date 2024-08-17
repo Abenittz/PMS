@@ -9,19 +9,19 @@ namespace yapms.Mappers
 {
     public static class UserMapper
     {
-        public static UserDto ToUserDto(this Users usreDto)
+        public static UserDto ToUserDto(this Users userModel)
         {
             return new UserDto
             {
-                ID = usreDto.ID,
-                Firstname = usreDto.Firstname,
-                Lastname = usreDto.Lastname,
-                Password = usreDto.Password,
-                Email = usreDto.Email,
-                Username = usreDto.Username,
-                ProfilePicture = usreDto.ProfilePicture,
-                PhoneNo = usreDto.PhoneNo,
-                SkillSet = usreDto.SkillSet
+                ID = userModel.ID,
+                Firstname = userModel.Firstname,
+                Lastname = userModel.Lastname,
+                Password = userModel.Password,
+                Email = userModel.Email,
+                Username = userModel.Username,
+                ProfilePicture = userModel.ProfilePicture,
+                PhoneNo = userModel.PhoneNo,
+                SkillSet = userModel.SkillSet
             };
         }
         public static Users ToUserFromCreateDto(this CreateUsersRequestdto usersDto)

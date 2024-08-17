@@ -9,15 +9,15 @@ namespace yapms.Mappers
 {
     public static class ProjectMappers
     {
-        public static ProjectsDto ToProjectDto(this Projects projects)
+        public static ProjectsDto ToProjectDto(this Projects projectModel)
         {
             return new ProjectsDto
             {
-                ID = projects.ID,
-                Name = projects.Name,
-                Description = projects.Description,
-                StartDate = projects.StartDate,
-                EndDate = projects.EndDate,
+                ID = projectModel.ID,
+                Name = projectModel.Name,
+                Description = projectModel.Description,
+                StartDate = projectModel.StartDate,
+                EndDate = projectModel.EndDate,
             };
         }
         public static Projects ToProjectFromProjectDto(this CreateProjectRequestDto projectDto){
