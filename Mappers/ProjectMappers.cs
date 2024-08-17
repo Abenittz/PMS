@@ -18,6 +18,7 @@ namespace yapms.Mappers
                 Description = projectModel.Description,
                 StartDate = projectModel.StartDate,
                 EndDate = projectModel.EndDate,
+                Tasks = projectModel.Tasks.Select(t => t.ToTasksDto()).ToList(),
             };
         }
         public static Projects ToProjectFromProjectDto(this CreateProjectRequestDto projectDto){

@@ -12,5 +12,6 @@ namespace yapms.Dtos.Tasks
         public required string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime DueDate { get; set; }
+        public int? ProjectID { get; set; }
     }
 }

@@ -43,12 +43,12 @@ namespace yapms.Repositories
 
         public async Task<List<Projects>> GetAllAsync()
         {
-            return await _context.Projects.ToListAsync();
+            return await _context.Projects.Include(p => p.Tasks).ToListAsync();
         }
 
         public async Task<Projects?> GetByIdAsync(int id)
         {
-           return await _context.Projects.FindAsync(id);
+           return await _context.Projects.Include(p => p.Tasks).FirstOrDefaultAsync(x => x.ID == id);
         }
 
         public async Task<Projects?> UpdateAsync( int id, UpdateProjectsDto projectsDto)

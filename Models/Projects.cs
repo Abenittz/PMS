@@ -14,5 +14,6 @@ namespace yapms.Models
         public DateTime EndDate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public List<Tasks> Tasks { get; set; } = new List<Tasks>();
     }
 }

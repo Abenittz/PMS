@@ -20,7 +20,12 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
-builder.Services.AddScoped<ITasksRepository, TasksRepository>(); 
+builder.Services.AddScoped<ITasksRepository, TasksRepository>();
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
 
 var app = builder.Build();
 
