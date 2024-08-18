@@ -9,6 +9,7 @@ using yapms.Data;
 using yapms.Dtos.Tasks;
 using yapms.Interfaces;
 using yapms.Mappers;
+using yapms.Migrations;
 
 
 namespace yapms.Controllers
@@ -19,10 +20,12 @@ namespace yapms.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly ITasksRepository _taskRepo;
-        public TasksController(ApplicationDBContext context, ITasksRepository taskRepo)
+        private readonly IProjectsRepository _projectsRepo;
+        public TasksController(ApplicationDBContext context, ITasksRepository taskRepo, IProjectsRepository projectsRepo)
         {
             _context = context;
             _taskRepo = taskRepo;
+            _projectsRepo = projectsRepo;
 
         }
 
@@ -49,10 +52,15 @@ namespace yapms.Controllers
             return Ok(tasks.ToTasksDto());
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateTasksDto taskDto)
+        [HttpPost("{projectId}")]
+        
+        public async Task<IActionResult> Create( CreateTasksDto taskDto, [FromRoute] int projectId)
         {
-            var tasks = taskDto.ToTaskFromTaskDto();
+            if (!await _projectsRepo.ProjectExists(projectId)){
+                return BadRequest("the project doesn't exist");
+            }
+
+            var tasks = taskDto.ToTaskFromTaskDto(projectId);
             await _taskRepo.CreateAsync(tasks);
 
             return CreatedAtAction(nameof(GetById), new { id = tasks.ID }, tasks.ToTasksDto());

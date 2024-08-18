@@ -51,6 +51,11 @@ namespace yapms.Repositories
            return await _context.Projects.Include(p => p.Tasks).FirstOrDefaultAsync(x => x.ID == id);
         }
 
+        public async Task<bool> ProjectExists(int id)
+        {
+            return await _context.Projects.AnyAsync(x => x.ID == id);
+        }
+
         public async Task<Projects?> UpdateAsync( int id, UpdateProjectsDto projectsDto)
         {
             var existingProject = await _context.Projects.FirstOrDefaultAsync(x => x.ID == id);

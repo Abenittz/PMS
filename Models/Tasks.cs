@@ -11,9 +11,9 @@ namespace yapms.Models
         public int ID { get; set; }
         public required string Title { get; set; }
         public required string Description { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime DueDate { get; set; }
-        public int? ProjectID { get; set; }
+        public int? ProjectsID { get; set; }
         public Projects? Projects { get; set; }
         
     }

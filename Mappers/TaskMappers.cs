@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using yapms.Dtos.Tasks;
+using yapms.Migrations;
 using yapms.Models;
 
 namespace yapms.Mappers
@@ -19,17 +20,18 @@ namespace yapms.Mappers
                 Description = tasksModel.Description,
                 CreatedDate = tasksModel.CreatedDate,
                 DueDate = tasksModel.DueDate,
+                ProjectsID = tasksModel.ProjectsID
             };
         }
 
-        public static Tasks ToTaskFromTaskDto(this CreateTasksDto tasks)
+        public static Tasks ToTaskFromTaskDto(this CreateTasksDto taskDto, int projectId)
         {
             return new Tasks
             {
-                Title = tasks.Title,
-                Description = tasks.Description,
-                CreatedDate = tasks.CreatedDate,
-                DueDate = tasks.DueDate,
+                Title = taskDto.Title,
+                Description = taskDto.Description,
+                DueDate = taskDto.DueDate,
+                ProjectsID = projectId
             };
         }
 

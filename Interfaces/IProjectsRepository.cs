@@ -14,5 +14,6 @@ namespace yapms.Interfaces
         Task<Projects> CreateAsync(Projects project);
         Task<Projects?> UpdateAsync(int id, UpdateProjectsDto project);
         Task<Projects?> DeleteAsync(int id);
+        Task<bool> ProjectExists(int id);
     }
 }
