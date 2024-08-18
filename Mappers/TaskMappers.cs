@@ -35,5 +35,16 @@ namespace yapms.Mappers
             };
         }
 
+        public static Tasks ToTasksFromUpdateDto(this UpdateTaskDto taskDto)
+        {
+            return new Tasks
+            {
+                Title = taskDto.Title,
+                Description = taskDto.Description,
+                DueDate = taskDto.DueDate,
+                
+            };
+        }
+
     }
 }

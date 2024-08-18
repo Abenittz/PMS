@@ -56,7 +56,7 @@ namespace yapms.Repositories
 
         public async Task<Tasks?> UpdateAsync(UpdateTaskDto updateDto, int id)
         {
-            var existingTask = await _context.Tasks.FirstOrDefaultAsync(x => x.ID == id);
+            var existingTask = await _context.Tasks.FindAsync(id);
 
             if (existingTask == null)
             {
@@ -65,7 +65,7 @@ namespace yapms.Repositories
 
             existingTask.Title = updateDto.Title;
             existingTask.Description = updateDto.Description;
-            existingTask.CreatedDate = updateDto.CreatedDate;
+           
             existingTask.DueDate = updateDto.DueDate;
 
             await _context.SaveChangesAsync();
