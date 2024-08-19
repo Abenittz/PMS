@@ -24,19 +24,29 @@ namespace yapms.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(){
+        public async Task<IActionResult> GetAll()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var projects = await _projectRepo.GetAllAsync();
             var userDto = projects.Select(s => s.ToProjectDto());
 
             return Ok(projects);
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id){
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var projects = await _projectRepo.GetByIdAsync(id);
 
-            if (projects == null){
+            if (projects == null)
+            {
                 return NotFound();
             };
 
@@ -44,32 +54,49 @@ namespace yapms.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateProjectRequestDto projectDto){
+        public async Task<IActionResult> Create([FromBody] CreateProjectRequestDto projectDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var project = projectDto.ToProjectFromProjectDto();
             await _projectRepo.CreateAsync(project);
 
-            return CreatedAtAction(nameof(GetById), new {ID = project.ID}, project.ToProjectDto()); 
+            return CreatedAtAction(nameof(GetById), new { ID = project.ID }, project.ToProjectDto());
         }
 
         [HttpPut]
-        [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id ,[FromBody] UpdateProjectsDto projectsDto){
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProjectsDto projectsDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var existingProject = await _projectRepo.UpdateAsync(id, projectsDto);
 
-            if (existingProject == null) {
+            if (existingProject == null)
+            {
                 Console.WriteLine("i am null");
                 return NotFound();
             };
-           
+
             return Ok(existingProject);
         }
 
         [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id){
-            var project = await _projectRepo.DeleteAsync(id);   
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var project = await _projectRepo.DeleteAsync(id);
 
-            if (project == null) {
+            if (project == null)
+            {
                 return NotFound();
             }
 

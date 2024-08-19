@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -32,16 +33,23 @@ namespace yapms.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var tasks = await _taskRepo.GetAllAsync();
             var tasksDto = tasks.Select(t => t.ToTasksDto());
 
             return Ok(tasks);
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var tasks = await _context.Tasks.FindAsync(id);
 
             if (tasks == null)
@@ -52,11 +60,15 @@ namespace yapms.Controllers
             return Ok(tasks.ToTasksDto());
         }
 
-        [HttpPost("{projectId}")]
-        
-        public async Task<IActionResult> Create( CreateTasksDto taskDto, [FromRoute] int projectId)
+        [HttpPost("{projectId:int}")]
+        public async Task<IActionResult> Create(CreateTasksDto taskDto, [FromRoute] int projectId)
         {
-            if (!await _projectsRepo.ProjectExists(projectId)){
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!await _projectsRepo.ProjectExists(projectId))
+            {
                 return BadRequest("the project doesn't exist");
             }
 
@@ -67,9 +79,13 @@ namespace yapms.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromBody] UpdateTaskDto updateDto, [FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var existingTask = await _taskRepo.UpdateAsync(updateDto, id);
 
             if (existingTask == null)
@@ -81,9 +97,13 @@ namespace yapms.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var existingTask = await _taskRepo.DeleteAsync(id);
             if (existingTask == null)
             {

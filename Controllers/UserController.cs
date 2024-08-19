@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using yapms.Data;
 using yapms.Dtos.Users;
 using yapms.Interfaces;
@@ -24,18 +25,29 @@ namespace yapms.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(){
+        public async Task<IActionResult> GetAll()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var user = await _userRepo.GetAllAsync();
             var userDto = user.Select(s => s.ToUserDto());
-            
+
             return Ok(user);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id){
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var users = await _userRepo.GetByIdAsync(id);
 
-            if (users==null){
+            if (users == null)
+            {
                 return NotFound();
             }
 
@@ -43,18 +55,29 @@ namespace yapms.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUsersRequestdto userDto){
+        public async Task<IActionResult> Create([FromBody] CreateUsersRequestdto userDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var user = userDto.ToUserFromCreateDto();
             await _userRepo.CreateAsync(user);
-            return CreatedAtAction(nameof(GetById), new {id = user.ID}, user.ToUserDto());
+            return CreatedAtAction(nameof(GetById), new { id = user.ID }, user.ToUserDto());
         }
 
         [HttpPut]
-        [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUsersRequestdto updateDto){
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUsersRequestdto updateDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var user = await _userRepo.UpdateAsync(id, updateDto);
 
-            if (user==null){
+            if (user == null)
+            {
                 return NotFound();
             }
 
@@ -63,11 +86,17 @@ namespace yapms.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id){
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var user = await _userRepo.DeleteAsync(id);
-            
-            if (user==null){
+
+            if (user == null)
+            {
                 return NotFound();
             }
 
